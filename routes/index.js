@@ -1,6 +1,7 @@
 const express = require("express")
 const router = new express.Router();
 const employees = require('./employees');
+const trainings = require('./trainings')
 const swaggerRoute = require('./swagger');
 const passport = require('passport');
 
@@ -12,7 +13,7 @@ router.get('/', (req, res) => {
 });
 */
 router.use('/employees', employees);
-
+router.use('/trainings', trainings);
 router.get("/login", passport.authenticate('github'), (req, res) => {});
 
 router.get("/logout", function(req, res, next) {

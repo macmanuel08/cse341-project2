@@ -28,9 +28,10 @@ const getSingle = async (req, res) => {
 
 const createEmployee = async (req, res) => {
     //#swagger.tags=['employees']
-    const { name, position, email, phone, department, hireDate, salary } = req.body;
+    const { name, employeeId, position, email, phone, department, hireDate, salary } = req.body;
     const employee = {     
         name,
+        employeeId,
         position,
         email,
         phone,
@@ -50,10 +51,11 @@ const updateEmployee = async (req, res) => {
     if (!ObjectId.isValid(req.params.id.toString())) res.status(400).json('Must use a valid employee ID to update employee');
 
     //#swagger.tags=['employees']
-    const employeeId = new ObjectId(req.params.id);
-    const { name, position, email, phone, department, hireDate, salary } = req.body;
+    const employeeDbId = new ObjectId(req.params.id);
+    const { name, employeeId, position, email, phone, department, hireDate, salary } = req.body;
     const employee = {     
         name,
+        employeeId,
         position,
         email,
         phone,
@@ -61,7 +63,7 @@ const updateEmployee = async (req, res) => {
         hireDate,
         salary
     };
-    const result = await mongodb.getDatabase().db('project2').collection('employees').replaceOne({ _id: employeeId }, employee);
+    const result = await mongodb.getDatabase().db('project2').collection('employees').replaceOne({ _id: employeeDbId }, employee);
     if (result.modifiedCount > 0) {
         res.status(204).send();
     } else {
@@ -73,8 +75,8 @@ const deleteEmployee = async (req, res) => {
     if (!ObjectId.isValid(req.params.id)) res.status(400).json('Must use a valid employee ID to delete employee');
 
     //#swagger.tags=['employees']
-    const employeeId = new ObjectId(req.params.id);
-    const result = await mongodb.getDatabase().db('project2').collection('employees').deleteOne({ _id: employeeId });
+    const employeeDbId = new ObjectId(req.params.id);
+    const result = await mongodb.getDatabase().db('project2').collection('employees').deleteOne({ _id: employeeDbId });
     if (result.deletedCount > 0) {
         res.status(204).send();
     } else {
